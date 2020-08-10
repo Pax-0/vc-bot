@@ -19,7 +19,9 @@ module.exports.generator = async (msg) => {
 };
 
 module.exports.options = {
-	name: 'delvc',
+    name: 'delvc',
+    aliases: ['deletevc', 'dvc', 'removevc', 'removevoicechannel'],
+    guildOnly: true,
 	description: 'deletes a voice channel.',
 	enabled: true,
 	fullDescription:'This can be used by hosts to delete a voice channel.',
