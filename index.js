@@ -28,10 +28,7 @@ bot.on('ready', async () => { // When the bot is ready
 	await loadEvents('./events');
 	await loadDB(bot);
     await utils.checkDBSettings(bot);
-    const settings = await bot.db.settings.findOne({});
-    if(!settings) return console.log('there was an error, please try again later.');
-    let guild = bot.guilds.get(settings.mainGuildID);
-    await startVCHostTimeoutCheck(bot, guild)
+    await startVCHostTimeoutCheck(bot);
 });
 
 async function loadDB(bot){
@@ -81,10 +78,13 @@ async function loadCommands(dir){
 		}
 	}
 }
-async function startVCHostTimeoutCheck(bot, guild){
+async function startVCHostTimeoutCheck(bot){
+	const settings = await bot.db.settings.findOne({});
+    if(!settings) return console.log('there was an error, please try again later.');
+	let guild = bot.guilds.get(settings.mainGuildID);
+	if(!guild) return;
 
 	cron.schedule('* * * * *', async () => {
-        console.log('cron job ran.')
 		const sessions = await bot.db.sessions.find({});
 		if(!sessions.length) return;
 		for(const session of sessions){
@@ -93,10 +93,10 @@ async function startVCHostTimeoutCheck(bot, guild){
             let vc = guild.channels.get(session.channelID);
             if(!vc) return;
 
-            if(vc.voiceMembers.find(m => m.id === session.host)) return console.log('the host is still in the channel');
-            if( !isNaN(session.lastSeen) && Date.now() - session.lastSeen > 5000){ // the limit for timeout
+            if(vc.voiceMembers.find(m => m.id === session.host)) return; // console.log('the host is still in the channel');
+            if( !isNaN(session.lastSeen) && Date.now() - session.lastSeen > 120000){ // the limit for timeout
                 await vc.delete('Host timed out.');
-                console.log('the host timed out')
+                console.log('a host timed out');
 				return bot.db.sessions.remove({host: host.id}, {}, {});
 			}
 		}

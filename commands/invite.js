@@ -16,7 +16,8 @@ module.exports.generator = async (msg, args) => {
     let sent = await DM.createMessage(`You have been invited to join ${msg.author.mention}'s voice session, please react below to accept/deny the invitation.`);
     await sent.addReaction('✅');
     await sent.addReaction('❌');
-    return bot.db.sessions.update({host: msg.author.id}, { $addToSet: { invited : invited.id } }, {});
+    await bot.db.sessions.update({host: msg.author.id}, { $addToSet: { invited : invited.id } }, {});
+    return 'Invite sent.';
 };
 
 module.exports.options = {

@@ -1,27 +1,36 @@
 
 const bot = require('../index');
+
 module.exports.generator = async (msg, args) => {
     const settings = await bot.db.settings.findOne({});
     if(!settings) return msg.channel.createMessage('there was an error, please try again later.');
     let currenSession = await bot.db.sessions.findOne({host: msg.author.id});
     if(currenSession) return msg.channel.createMessage('You have already created a voice channel.');
-
-    let sent = await msg.channel.createMessage('Creating voice channel...');
-    let vc = await createVC(msg.channel.guild, msg.author.username, settings, args[0] ? args[0] : 5);
-    let session = {
-        host: msg.author.id,
-        channelID: vc.id,
-        lastSeen: Date.now(),
-        invited: []
+    try {
+        let sent = await msg.channel.createMessage('Creating voice channel...');
+        let vc = await createVC(msg.channel.guild, msg.author.username, settings, args[0] ? args[0] : 5);
+        await vc.editPermission('462687980981846036', 1048576, 0, "role", "session started."); // give hosts and viewers the connect perm, and deny it for @everyone
+        await vc.editPermission('367316843318345739', 1048576, 0, "role", "session started.");
+        await vc.editPermission(msg.channel.guild.id, 0, 1048576, "role", "session started.");
+        let session = {
+            host: msg.author.id,
+            channelID: vc.id,
+            lastSeen: Date.now(),
+            invited: []
+        }
+        await bot.db.sessions.insert(session);
+        return sent.edit('Voice channel created!')
+    } catch (error) {
+        console.log(error);
+        return msg.channel.createMessage('There was an error when creating the channel, check my perms and try again.')
     }
-    await bot.db.sessions.insert(session);
-    return sent.edit('Voice channel created!')
 };
 
 async function createVC(guild, name, settings, slots){
     let mainCategory = guild.channels.get(settings.mainCategory);
     if(!mainCategory) return msg.channel.createMessage('Couldnt find the main VC category, please let an admin know.');
-    return guild.createChannel(name, 2, {parentID: mainCategory.id, userLimit: slots});
+    let vc = await guild.createChannel(name, 2, {parentID: mainCategory.id, userLimit: slots});
+    return vc;
 }
 module.exports.options = {
 	name: 'createvc',
