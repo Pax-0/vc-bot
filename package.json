@@ -1,0 +1,16 @@
+{
+  "name": "vc-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "eris": "^0.13.3",
+    "nedb-promises": "^4.0.4",
+    "node-cron": "^2.0.3"
+  }
+}

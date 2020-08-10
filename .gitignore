@@ -1,0 +1,9 @@
+# node_modules dont need to be pushed to github.
+/node_modules
+
+# config file too!
+config.json
+tokens.json
+
+# database settings
+/data
