@@ -11,7 +11,8 @@ module.exports.generator = async (msg, args) => {
     let session = {
         host: msg.author.id,
         channelID: vc.id,
-        lastSeen: Date.now()
+        lastSeen: Date.now(),
+        invited: []
     }
     await bot.db.sessions.insert(session);
     return sent.edit('Voice channel created!')
