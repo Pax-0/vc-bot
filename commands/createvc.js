@@ -4,6 +4,7 @@ const bot = require('../index');
 module.exports.generator = async (msg, args) => {
     const settings = await bot.db.settings.findOne({});
     if(!settings) return msg.channel.createMessage('there was an error, please try again later.');
+    if(!settings.setup) return msg.channel.createMessage('Please use the setup command first.');
     let currenSession = await bot.db.sessions.findOne({host: msg.author.id});
     if(currenSession) return msg.channel.createMessage('You have already created a voice channel.');
     try {

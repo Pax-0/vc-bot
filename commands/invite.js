@@ -21,7 +21,9 @@ module.exports.generator = async (msg, args) => {
 };
 
 module.exports.options = {
-	name: 'inv',
+    name: 'inv',
+    aliases: ['invite', 'adduser', 'i', 'invuser'],
+    guildOnly: true,
 	description: 'invites a user to a voice channel.',
 	enabled: true,
 	fullDescription:'Sends an invite to a user.',
