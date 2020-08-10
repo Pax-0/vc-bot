@@ -34,7 +34,9 @@ async function createVC(guild, name, settings, slots){
     return vc;
 }
 module.exports.options = {
-	name: 'createvc',
+    name: 'createvc',
+    aliases: ['makevc', 'cvc', 'addvc', 'createvoicechannel'],
+    guildOnly: true,
 	description: 'Creates a voice channel.',
 	enabled: true,
 	fullDescription:'This can be used by hosts to create a voice channel with a specific member limit.',
