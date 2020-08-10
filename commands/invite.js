@@ -8,7 +8,7 @@ module.exports.generator = async (msg, args) => {
     let currenSession = await bot.db.sessions.findOne({host: msg.author.id});
     if(!currenSession) return msg.channel.createMessage('You arent hosting a voice session currently.');
     
-    let invited = utils.resolveMember(args.join(''), msg.channel.guild);
+    let invited = await utils.resolveUser(args.join(''), bot);
     if(!invited) return msg.channel.createMessage('Couldnt find that user.');
     if(!msg.channel.guild.members.get(invited.id)) return msg.channel.createMessage('Please mention a valid guild member.');
 
