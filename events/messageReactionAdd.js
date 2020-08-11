@@ -1,5 +1,4 @@
 const bot = require('../index');
-const utils = require('../utils');
 async function handler(msg, emoji, userID){
 	if(userID === bot.id) return;
 	
@@ -16,7 +15,7 @@ async function handler(msg, emoji, userID){
 	if(!guild || !vc ) return;
 
 	if(emoji.name == '✅'){
-		await vc.editPermission(userID, 1048576, 0, "member", "was invited by host.");
+		await vc.editPermission(userID, 1048576, 0, 'member', 'was invited by host.');
 	}
 	if(emoji.name == '❌'){
 		await msg.channel.createMessage('you have denied the invite.');

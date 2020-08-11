@@ -27,20 +27,20 @@ bot.on('ready', async () => { // When the bot is ready
 	await loadCommands('./commands');
 	await loadEvents('./events');
 	await loadDB(bot);
-    await utils.checkDBSettings(bot);
-    await startVCHostTimeoutCheck(bot);
+	await utils.checkDBSettings(bot);
+	await startVCHostTimeoutCheck(bot);
 });
 
 async function loadDB(bot){
-    const settingsStore = Datastore.create('./data/settings.db');
-    const sessionsStore = Datastore.create('./data/sessions.db');
+	const settingsStore = Datastore.create('./data/settings.db');
+	const sessionsStore = Datastore.create('./data/sessions.db');
 	bot.db = {
-        settings: settingsStore,
-        sessions: sessionsStore
+		settings: settingsStore,
+		sessions: sessionsStore
 	};
 	
-    await bot.db.settings.load();
-    await bot.db.sessions.load();
+	await bot.db.settings.load();
+	await bot.db.sessions.load();
 	return console.log('Connected to DB!');
 }
 
@@ -80,7 +80,7 @@ async function loadCommands(dir){
 }
 async function startVCHostTimeoutCheck(bot){
 	const settings = await bot.db.settings.findOne({});
-    if(!settings) return console.log('there was an error, please try again later.');
+	if(!settings) return console.log('there was an error, please try again later.');
 	let guild = bot.guilds.get(settings.mainGuildID);
 	if(!guild) return;
 
@@ -89,14 +89,14 @@ async function startVCHostTimeoutCheck(bot){
 		if(!sessions.length) return;
 		for(const session of sessions){
 			let host = await utils.resolveUser(session.host, bot);
-            if(!host) return;
-            let vc = guild.channels.get(session.channelID);
-            if(!vc) return;
+			if(!host) return;
+			let vc = guild.channels.get(session.channelID);
+			if(!vc) return;
 
-            if(vc.voiceMembers.find(m => m.id === session.host)) return; // console.log('the host is still in the channel');
-            if( !isNaN(session.lastSeen) && Date.now() - session.lastSeen > 120000){ // the limit for timeout
-                await vc.delete('Host timed out.');
-                console.log('a host timed out');
+			if(vc.voiceMembers.find(m => m.id === session.host)) return; // console.log('the host is still in the channel');
+			if( !isNaN(session.lastSeen) && Date.now() - session.lastSeen > 120000){ // the limit for timeout
+				await vc.delete('Host timed out.');
+				console.log('a host timed out');
 				return bot.db.sessions.remove({host: host.id}, {}, {});
 			}
 		}

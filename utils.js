@@ -15,11 +15,11 @@ async function resolveUser(string, bot){
 async function loadDefaultDbSettings(bot){
 	const doc = {
 		setup: false,
-        mainGuildID: null,
+		mainGuildID: null,
 		hosts: null,
 		viewers: null,
-        owners: ['411282954250092564', '143414786913206272'],
-        mainCategory: null
+		owners: ['411282954250092564', '143414786913206272'],
+		mainCategory: null
 	}; // add the doc if it dosnt exist already.
 	await bot.db.settings.insert(doc);
 	return;
