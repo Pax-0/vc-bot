@@ -16,6 +16,8 @@ async function handler(msg, emoji, userID){
 
 	if(emoji.name == '✅'){
 		await vc.editPermission(userID, 1048576, 0, 'member', 'was invited by host.');
+		await msg.channel.createMessage('you have accepted the invite, you should be able to connect now.');
+		await msg.delete();
 	}
 	if(emoji.name == '❌'){
 		await msg.channel.createMessage('you have denied the invite.');
