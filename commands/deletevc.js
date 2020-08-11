@@ -30,7 +30,7 @@ module.exports.options = {
 		custom: async (msg) => {
 			const settings = await bot.db.settings.findOne({});
 			if(settings.owners.includes(msg.author.id)) return true;
-			if( msg.member.roles.includes(settings.roles.hosts) ) return true;
+			if( msg.member.roles.includes(settings.hosts) ) return true;
 			return false;
 		}
 	}

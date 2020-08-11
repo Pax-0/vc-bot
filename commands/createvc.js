@@ -10,8 +10,8 @@ module.exports.generator = async (msg, args) => {
     try {
         let sent = await msg.channel.createMessage('Creating voice channel...');
         let vc = await createVC(msg.channel.guild, msg.author.username, settings, args[0] ? args[0] : 5);
-        await vc.editPermission('462687980981846036', 1048576, 0, "role", "session started."); // give hosts and viewers the connect perm, and deny it for @everyone
-        await vc.editPermission('367316843318345739', 1048576, 0, "role", "session started.");
+        await vc.editPermission(settings.hosts, 1048576, 0, "role", "session started."); // give hosts and viewers the connect perm, and deny it for @everyone
+        await vc.editPermission(settings.viewers, 1048576, 0, "role", "session started.");
         await vc.editPermission(msg.channel.guild.id, 0, 1048576, "role", "session started.");
         let session = {
             host: msg.author.id,
@@ -45,7 +45,7 @@ module.exports.options = {
 		custom: async (msg) => {
 			const settings = await bot.db.settings.findOne({});
 			if(settings.owners.includes(msg.author.id)) return true;
-			if( msg.member.roles.includes(settings.roles.hosts) ) return true;
+			if( msg.member.roles.includes(settings.hosts) ) return true;
 			return false;
 		}
 	}

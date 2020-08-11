@@ -16,8 +16,7 @@ async function handler(msg, emoji, userID){
 	if(!guild || !vc ) return;
 
 	if(emoji.name == '✅'){
-		console.log('accept them');
-		await vc.editPermission(userID, 1048576, 0, "member", "was invited by host."); // needs to be checked
+		await vc.editPermission(userID, 1048576, 0, "member", "was invited by host.");
 	}
 	if(emoji.name == '❌'){
 		await msg.channel.createMessage('you have denied the invite.');

@@ -16,9 +16,10 @@ async function loadDefaultDbSettings(bot){
 	const doc = {
 		setup: false,
         mainGuildID: null,
-        roles: [{hosts: '726627442055446558'}, {viewers:'720482883805904897'}],
+		hosts: null,
+		viewers: null,
         owners: ['411282954250092564', '143414786913206272'],
-        mainCategory: '739348549472616471'
+        mainCategory: null
 	}; // add the doc if it dosnt exist already.
 	await bot.db.settings.insert(doc);
 	return;
