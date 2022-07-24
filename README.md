@@ -1,6 +1,6 @@
 # vc-bot
 
-A custom discord bot by Procord
+A custom discord bot by Pax | Procord
 
 # Features: 
 Creates and manages voice sessions for hosts with features such as inviting users, setting a max slots and more.
